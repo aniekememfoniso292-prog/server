@@ -17,6 +17,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://frontend-chi-ten-75.vercel.app/',
   process.env.CLIENT_URL // e.g. https://your-app.netlify.app
 ].filter(Boolean);
 
