@@ -14,17 +14,22 @@ connectDB();
 app.use(helmet());
 
 // 2. Configure CORS whitelist to accept requests from localhost & Netlify frontend domains
+// 2. Configure CORS whitelist to accept requests from localhost, Netlify & Vercel
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://frontend-chi-ten-75.vercel.app/',
-  process.env.CLIENT_URL // e.g. https://your-app.netlify.app
+  'https://frontend-chi-ten-75.vercel.app', // 🔴 FIXED: Removed trailing slash '/'
+  process.env.CLIENT_URL 
 ].filter(Boolean);
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl) or if origin is whitelisted
-    if (!origin || allowedOrigins.indexOf(origin) !== -1 || /\.netlify\.app$/.test(origin)) {
+    if (
+      !origin || 
+      allowedOrigins.indexOf(origin) !== -1 || 
+      /\.netlify\.app$/.test(origin) ||
+      /\.vercel\.app$/.test(origin) // 🔴 ADDED: Support for all Vercel domains and deployment branches
+    ) {
       callback(null, true);
     } else {
       callback(new Error('CORS Policy: Origin not allowed by whitelist'));
@@ -33,6 +38,7 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 
