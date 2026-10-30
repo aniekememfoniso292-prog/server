@@ -43,7 +43,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // 3. Map REST routing controllers API pipelines
-app.use('/api/v1/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/api/v1/products', productRoutes);
 
 // 4. Connect to Local/Cloud MongoDB Database server
